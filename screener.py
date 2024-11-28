@@ -7,16 +7,12 @@ def find_arbitrage_opportunities():
     global COIN_PAIRS
     for coin in COIN_PAIRS:
         # get UNOCOIN orderbook
-        unocoin_ob = json.loads(
-            requests.request(
-                "GET", get_unocoin_url(COIN_PAIRS[coin].get("UNOCOIN"))
-            ).text
-        )["asks"]
+        unocoin_ob = json.loads(requests.request("GET", get_unocoin_url(coin)).text)[
+            "asks"
+        ]
 
         # get Binance Price
-        binance_price = json.loads(
-            requests.get(get_binance_url(COIN_PAIRS[coin].get("BINANCE"))).text
-        )
+        binance_price = json.loads(requests.get(get_binance_url(coin)).text)
 
         # compare difference between coin prices
         difference = get_avg(unocoin_ob[0][0], unocoin_ob[1][0]) / float(
